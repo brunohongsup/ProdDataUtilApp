@@ -129,11 +129,13 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="ProdDataUtilApp.h" />
+    <ClInclude Include="ProdDataUtilFrame.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ProdDataUtilApp.cpp" />
+    <ClCompile Include="ProdDataUtilFrame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ProdDataUtilApp.rc" />

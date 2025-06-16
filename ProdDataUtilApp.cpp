@@ -1,10 +1,9 @@
 // ProdDataUtilApp.cpp : Defines the entry point for the application.
 //
 
-#include "framework.h"
 #include "ProdDataUtilApp.h"
-
-wxIMPLEMENT_APP(ProdDataUtilApp);
+#include "framework.h"
+#include "ProdDataUtilFrame.h"
 
 bool ProdDataUtilApp::OnInit()
 {
@@ -12,7 +11,8 @@ bool ProdDataUtilApp::OnInit()
     if (!wxApp::OnInit())
         return false;
 
-    auto frame = new wxFrame();
+    auto frame = new ProdDataUtilFrame();
     frame->Show();
     return true;
 }
+
