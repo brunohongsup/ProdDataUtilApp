@@ -42,7 +42,8 @@ protected:
     wxButton* m_btnSearch;
     wxDatePickerCtrl* m_date_pickerBegin;
     wxDatePickerCtrl* m_date_pickerEnd;
-    wxGrid* m_grid;
+    wxGrid* m_gridProduct;
+    wxGrid* m_gridTotalCount;
     wxMenu* m_menu;
     wxMenuBar* m_menubar;
     wxStaticText* m_static_text2;

@@ -20,40 +20,56 @@
       <node
         class="wxStatusBar" />
       <node
-        class="wxGridSizer">
+        class="wxFlexGridSizer"
+        cols="1"
+        flags="wxEXPAND">
         <node
-          class="wxBoxSizer"
-          var_name="box_sizer2">
+          class="wxBoxSizer">
           <node
-            class="wxStaticText"
-            label="Begin"
-            var_name="m_static_text" />
+            class="wxBoxSizer"
+            var_name="box_sizer2">
+            <node
+              class="wxStaticText"
+              label="Begin"
+              var_name="m_static_text" />
+            <node
+              class="wxDatePickerCtrl"
+              style="wxDP_DROPDOWN|wxDP_SHOWCENTURY"
+              var_name="m_date_pickerBegin" />
+          </node>
           <node
-            class="wxDatePickerCtrl"
-            style="wxDP_DROPDOWN|wxDP_SHOWCENTURY"
-            var_name="m_date_pickerBegin" />
-        </node>
-        <node
-          class="wxBoxSizer"
-          var_name="box_sizer3">
-          <node
-            class="wxStaticText"
-            label="End"
-            var_name="m_static_text2" />
-          <node
-            class="wxDatePickerCtrl"
-            style="wxDP_DROPDOWN|wxDP_SHOWCENTURY|wxDP_DEFAULT"
-            var_name="m_date_pickerEnd" />
-          <node
-            class="wxButton"
-            label="Search"
-            var_name="m_btnSearch" />
+            class="wxBoxSizer"
+            var_name="box_sizer3">
+            <node
+              class="wxStaticText"
+              label="End"
+              var_name="m_static_text2" />
+            <node
+              class="wxDatePickerCtrl"
+              style="wxDP_DROPDOWN|wxDP_SHOWCENTURY|wxDP_DEFAULT"
+              var_name="m_date_pickerEnd" />
+            <node
+              class="wxButton"
+              label="Search"
+              var_name="m_btnSearch" />
+          </node>
         </node>
         <node
           class="wxGrid"
           cell_fit="clip"
           cell_horiz_alignment="wxALIGN_RIGHT"
-          cell_vert_alignment="wxALIGN_CENTER" />
+          cell_vert_alignment="wxALIGN_CENTER"
+          cols="3"
+          drag_grid_size="1"
+          var_name="m_gridProduct" />
+        <node
+          class="wxGrid"
+          cell_fit="clip"
+          cell_horiz_alignment="wxALIGN_RIGHT"
+          cell_vert_alignment="wxALIGN_CENTER"
+          cols="3"
+          drag_grid_size="1"
+          var_name="m_gridTotalCount" />
       </node>
     </node>
   </node>

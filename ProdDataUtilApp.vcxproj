@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DateSortedEvent.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ProdDataUtilApp.h" />
     <ClInclude Include="proddatautilframe.h" />
@@ -139,6 +140,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DateSortedEvent.cpp" />
     <ClCompile Include="ProdDataUtilApp.cpp" />
     <ClCompile Include="proddatautilframe.cpp" />
     <ClCompile Include="ProdDataUtilFrameDerived.cpp" />

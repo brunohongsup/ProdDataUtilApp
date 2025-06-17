@@ -27,7 +27,9 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
 
     m_statusBar = CreateStatusBar();
 
-    auto* grid_sizer = new wxGridSizer(2, 0, 0);
+    auto* flex_grid_sizer = new wxFlexGridSizer(1, 0, 0);
+
+    auto* box_sizer = new wxBoxSizer(wxHORIZONTAL);
 
     auto* box_sizer2 = new wxBoxSizer(wxHORIZONTAL);
 
@@ -38,7 +40,7 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
         wxDefaultSize, wxDP_DROPDOWN|wxDP_SHOWCENTURY);
     box_sizer2->Add(m_date_pickerBegin, wxSizerFlags().Border(wxALL));
 
-    grid_sizer->Add(box_sizer2, wxSizerFlags().Border(wxALL));
+    box_sizer->Add(box_sizer2, wxSizerFlags().Border(wxALL));
 
     auto* box_sizer3 = new wxBoxSizer(wxHORIZONTAL);
 
@@ -52,25 +54,44 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
     m_btnSearch = new wxButton(this, wxID_ANY, "Search");
     box_sizer3->Add(m_btnSearch, wxSizerFlags().Border(wxALL));
 
-    grid_sizer->Add(box_sizer3, wxSizerFlags().Border(wxALL));
+    box_sizer->Add(box_sizer3, wxSizerFlags().Border(wxALL));
 
-    m_grid = new wxGrid(this, wxID_ANY);
+    flex_grid_sizer->Add(box_sizer, wxSizerFlags().Border(wxALL));
+
+    m_gridProduct = new wxGrid(this, wxID_ANY);
     {
-        m_grid->CreateGrid(5, 5);
-        m_grid->EnableDragGridSize(false);
-        m_grid->SetMargins(0, 0);
+        m_gridProduct->CreateGrid(5, 3);
+        m_gridProduct->EnableDragGridSize(true);
+        m_gridProduct->SetMargins(0, 0);
         #if wxCHECK_VERSION(3, 1, 4)
-            m_grid->SetDefaultCellFitMode(wxGridFitMode::Clip());
+            m_gridProduct->SetDefaultCellFitMode(wxGridFitMode::Clip());
         #endif
-        m_grid->SetDefaultCellAlignment(wxALIGN_RIGHT, wxALIGN_CENTER);
-        m_grid->SetColLabelAlignment(wxALIGN_CENTER, wxALIGN_CENTER);
-        m_grid->SetColLabelSize(wxGRID_AUTOSIZE);
+        m_gridProduct->SetDefaultCellAlignment(wxALIGN_RIGHT, wxALIGN_CENTER);
+        m_gridProduct->SetColLabelAlignment(wxALIGN_CENTER, wxALIGN_CENTER);
+        m_gridProduct->SetColLabelSize(wxGRID_AUTOSIZE);
 
-        m_grid->SetRowLabelAlignment(wxALIGN_CENTER, wxALIGN_CENTER);
-        m_grid->SetRowLabelSize(wxGRID_AUTOSIZE);
+        m_gridProduct->SetRowLabelAlignment(wxALIGN_CENTER, wxALIGN_CENTER);
+        m_gridProduct->SetRowLabelSize(wxGRID_AUTOSIZE);
     }
-    grid_sizer->Add(m_grid, wxSizerFlags().Border(wxALL));
-    SetSizerAndFit(grid_sizer);
+    flex_grid_sizer->Add(m_gridProduct, wxSizerFlags().Border(wxALL));
+
+    m_gridTotalCount = new wxGrid(this, wxID_ANY);
+    {
+        m_gridTotalCount->CreateGrid(5, 3);
+        m_gridTotalCount->EnableDragGridSize(true);
+        m_gridTotalCount->SetMargins(0, 0);
+        #if wxCHECK_VERSION(3, 1, 4)
+            m_gridTotalCount->SetDefaultCellFitMode(wxGridFitMode::Clip());
+        #endif
+        m_gridTotalCount->SetDefaultCellAlignment(wxALIGN_RIGHT, wxALIGN_CENTER);
+        m_gridTotalCount->SetColLabelAlignment(wxALIGN_CENTER, wxALIGN_CENTER);
+        m_gridTotalCount->SetColLabelSize(wxGRID_AUTOSIZE);
+
+        m_gridTotalCount->SetRowLabelAlignment(wxALIGN_CENTER, wxALIGN_CENTER);
+        m_gridTotalCount->SetRowLabelSize(wxGRID_AUTOSIZE);
+    }
+    flex_grid_sizer->Add(m_gridTotalCount, wxSizerFlags().Border(wxALL));
+    SetSizerAndFit(flex_grid_sizer);
 
     Centre(wxBOTH);
 

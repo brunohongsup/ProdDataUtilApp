@@ -21,7 +21,7 @@ public:
 
 	void Clear();
 
-	const std::vector<std::shared_ptr<Product>>& GetProducts() const;
+	std::vector<std::shared_ptr<Product>> GetProducts() const;
 
 private:
 	SearchManager() = default;

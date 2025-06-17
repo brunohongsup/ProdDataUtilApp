@@ -164,7 +164,7 @@ void SearchManager::Clear()
 	m_vctProducts.clear();
 }
 
-const std::vector<std::shared_ptr<Product>>& SearchManager::GetProducts() const
+std::vector<std::shared_ptr<Product>> SearchManager::GetProducts() const
 {
 	return m_vctProducts;
 }
