@@ -34,7 +34,7 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
 
     m_statusBar = CreateStatusBar();
 
-    auto* flex_grid_sizer = new wxFlexGridSizer(1, 0, 0);
+    auto* box_sizer5 = new wxBoxSizer(wxVERTICAL);
 
     auto* box_sizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -47,7 +47,7 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
         wxDefaultSize, wxDP_DROPDOWN|wxDP_SHOWCENTURY);
     box_sizer2->Add(m_date_pickerBegin, wxSizerFlags().Border(wxALL));
 
-    box_sizer->Add(box_sizer2, wxSizerFlags().Border(wxALL));
+    box_sizer->Add(box_sizer2, wxSizerFlags().Expand().Border(wxALL));
 
     auto* box_sizer3 = new wxBoxSizer(wxHORIZONTAL);
 
@@ -61,9 +61,9 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
     m_btnSearch = new wxButton(this, wxID_ANY, "Search");
     box_sizer3->Add(m_btnSearch, wxSizerFlags().Border(wxALL));
 
-    box_sizer->Add(box_sizer3, wxSizerFlags().Border(wxALL));
+    box_sizer->Add(box_sizer3, wxSizerFlags().Expand().Border(wxALL));
 
-    flex_grid_sizer->Add(box_sizer, wxSizerFlags().Border(wxALL));
+    box_sizer5->Add(box_sizer, wxSizerFlags().Expand().Border(wxALL));
 
     auto* box_sizer4 = new wxBoxSizer(wxHORIZONTAL);
 
@@ -90,7 +90,7 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
     auto* bmp = new wxStaticBitmap(this, wxID_ANY, wxNullBitmap);
     box_sizer4->Add(bmp, wxSizerFlags().Border(wxALL));
 
-    flex_grid_sizer->Add(box_sizer4, wxSizerFlags().Border(wxALL));
+    box_sizer5->Add(box_sizer4, wxSizerFlags().Expand().Border(wxALL));
 
     m_gridTotalCount = new wxGrid(this, wxID_ANY);
     {
@@ -107,8 +107,8 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
         m_gridTotalCount->SetRowLabelAlignment(wxALIGN_CENTER, wxALIGN_CENTER);
         m_gridTotalCount->SetRowLabelSize(100);
     }
-    flex_grid_sizer->Add(m_gridTotalCount, wxSizerFlags().Border(wxALL));
-    SetSizerAndFit(flex_grid_sizer);
+    box_sizer5->Add(m_gridTotalCount, wxSizerFlags().Border(wxALL));
+    SetSizerAndFit(box_sizer5);
 
     Centre(wxBOTH);
 

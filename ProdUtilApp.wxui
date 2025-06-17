@@ -20,14 +20,16 @@
       <node
         class="wxStatusBar" />
       <node
-        class="wxFlexGridSizer"
-        cols="1"
-        flags="wxEXPAND">
+        class="wxBoxSizer"
+        orientation="wxVERTICAL"
+        var_name="box_sizer5">
         <node
-          class="wxBoxSizer">
+          class="wxBoxSizer"
+          flags="wxEXPAND">
           <node
             class="wxBoxSizer"
-            var_name="box_sizer2">
+            var_name="box_sizer2"
+            flags="wxEXPAND">
             <node
               class="wxStaticText"
               label="Begin"
@@ -39,7 +41,8 @@
           </node>
           <node
             class="wxBoxSizer"
-            var_name="box_sizer3">
+            var_name="box_sizer3"
+            flags="wxEXPAND">
             <node
               class="wxStaticText"
               label="End"
@@ -56,7 +59,8 @@
         </node>
         <node
           class="wxBoxSizer"
-          var_name="box_sizer4">
+          var_name="box_sizer4"
+          flags="wxEXPAND">
           <node
             class="wxGrid"
             cell_fit="clip"

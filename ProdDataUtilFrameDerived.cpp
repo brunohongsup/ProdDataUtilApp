@@ -24,6 +24,8 @@ ProdDataUtilFrameDerived::ProdDataUtilFrameDerived(wxWindow* parent, wxWindowID 
 	m_gridTotalCount->SetColLabelValue(1, "OK");
 	m_gridTotalCount->SetColLabelValue(2, "NG");
 
+	m_tree_ctrlProduct->AddRoot(_T("IMAGE"));
+
 	auto initiateSearch  = [this](wxCommandEvent&)
 	{
 		auto searchManager = SearchManager::GetInstance();
@@ -88,11 +90,28 @@ ProdDataUtilFrameDerived::ProdDataUtilFrameDerived(wxWindow* parent, wxWindowID 
 void ProdDataUtilFrameDerived::OnUpdateSearchResults(wxCommandEvent&)
 {
 	auto searchManager = SearchManager::GetInstance();
-	auto products = searchManager->GetProducts();
+	std::vector<std::shared_ptr<Product>> products = searchManager->GetProducts();
 	m_gridProduct->ClearGrid();
+
+	wxTreeItemId rootId = m_tree_ctrlProduct->GetRootItem();
+	m_tree_ctrlProduct->DeleteChildren(rootId);
+	
 	const int rowSize = m_gridProduct->GetNumberRows();
 	if (rowSize < products.size())
 		m_gridProduct->AppendRows(products.size() - rowSize);
+
+	auto findOrAddChild = [this](wxTreeItemId parent, const std::shared_ptr<Product>& product)
+	{
+		//ToDo Implement Here
+		wxTreeItemIdValue cookie;
+		wxTreeItemId child = m_tree_ctrlProduct->GetFirstChild(parent, cookie);
+		while (child.IsOk()) {
+			if (tree->GetItemText(child) == text)
+				return child;
+			child = tree->GetNextChild(parent, cookie);
+		}
+		return tree->AppendItem(parent, text);
+	};
 
 	for (size_t row = 0; row < products.size(); row++)
 	{
@@ -101,6 +120,12 @@ void ProdDataUtilFrameDerived::OnUpdateSearchResults(wxCommandEvent&)
 		m_gridProduct->SetCellValue(row, colIdx++, product->GetTimeStamp().FormatISODate());
 		m_gridProduct->SetCellValue(row, colIdx++, product->GetId());
 		m_gridProduct->SetCellValue(row, colIdx++, product->GetJudge());
+		auto timeStamp = product->GetTimeStamp();
+		int year = timeStamp.GetYear();
+		int month = timeStamp.GetMonth();
+		int day = timeStamp.GetDay();
+		wxTreeItemIdValue cookie;
+		findOrAddChild(rootId, product);		
 	}
 }
 
