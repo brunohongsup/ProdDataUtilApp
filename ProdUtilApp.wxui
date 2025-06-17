@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<wxUiEditorData
+  data_version="16">
+  <node
+    class="Project"
+    wxWidgets_version="3.1">
+    <node
+      class="wxFrame"
+      class_name="ProdDataUtilFrame"
+      base_file="proddatautilframe"
+      derived_class_name="ProdDataUtilFrameDerived"
+      derived_file="proddatautilframe_derived">
+      <node
+        class="wxMenuBar">
+        <node
+          class="wxMenu"
+          label="&amp;Help"
+          stock_id="wxID_HELP" />
+      </node>
+      <node
+        class="wxStatusBar" />
+      <node
+        class="wxBoxSizer"
+        orientation="wxVERTICAL"
+        flags="wxEXPAND" />
+    </node>
+  </node>
+</wxUiEditorData>
