@@ -88,7 +88,7 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
         m_gridTotalCount->SetColLabelSize(wxGRID_AUTOSIZE);
 
         m_gridTotalCount->SetRowLabelAlignment(wxALIGN_CENTER, wxALIGN_CENTER);
-        m_gridTotalCount->SetRowLabelSize(wxGRID_AUTOSIZE);
+        m_gridTotalCount->SetRowLabelSize(100);
     }
     flex_grid_sizer->Add(m_gridTotalCount, wxSizerFlags().Border(wxALL));
     SetSizerAndFit(flex_grid_sizer);

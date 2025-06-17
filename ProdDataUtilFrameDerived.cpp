@@ -20,6 +20,10 @@ ProdDataUtilFrameDerived::ProdDataUtilFrameDerived(wxWindow* parent, wxWindowID 
 	m_gridProduct->SetColLabelValue(1, "ID");
 	m_gridProduct->SetColLabelValue(2, "Judge");
 
+	m_gridTotalCount->SetColLabelValue(0, "Total");
+	m_gridTotalCount->SetColLabelValue(1, "OK");
+	m_gridTotalCount->SetColLabelValue(2, "NG");
+
 	auto initiateSearch  = [this](wxCommandEvent&)
 	{
 		auto searchManager = SearchManager::GetInstance();
@@ -44,8 +48,8 @@ ProdDataUtilFrameDerived::ProdDataUtilFrameDerived(wxWindow* parent, wxWindowID 
 
 			wxTimeSpan length = end - begin;
 			int nDays = length.GetDays();
-			std::vector<std::vector<std::shared_ptr<Product>>> productsByDay{};
-			productsByDay.reserve(nDays);
+			std::shared_ptr<std::vector<std::vector<std::shared_ptr<Product>>>> productsByDay = std::make_shared<std::vector<std::vector<std::shared_ptr<Product>>>>();
+			productsByDay->reserve(nDays);
 			auto products = searchManager->GetProducts();
 			while (day <= end)
 			{
@@ -63,12 +67,13 @@ ProdDataUtilFrameDerived::ProdDataUtilFrameDerived(wxWindow* parent, wxWindowID 
 				std::vector<std::shared_ptr<Product>> productsOfDay{};
 				std::copy_if(std::begin(products), std::end(products), std::back_inserter(productsOfDay), datePredicate);
 				if (!productsOfDay.empty())
-					productsByDay.emplace_back(std::move(productsOfDay));
+					productsByDay->emplace_back(std::move(productsOfDay));
 				
 				day += oneDay;
 			}
 
-			
+			auto dateSortedEvent = new DateSortedEvent(productsByDay);
+			pEvtHandler->QueueEvent(dateSortedEvent);
 		};
 
 		std::thread t(search);
@@ -101,5 +106,34 @@ void ProdDataUtilFrameDerived::OnUpdateSearchResults(wxCommandEvent&)
 
 void ProdDataUtilFrameDerived::OnUpdateDateSortedResults(DateSortedEvent& event)
 {
-	
+	auto table = event.GetData();
+	const int rowSize = m_gridTotalCount->GetNumberRows();
+	if (rowSize < table->size())
+		m_gridTotalCount->AppendRows(table->size() - rowSize);
+
+	for (size_t row = 0; row < table->size(); row++)
+	{
+		auto productsOfDay = table->at(row);
+		int okCount = 0;
+		int ngCount = 0;
+		int naCount = 0;
+		for (size_t idx = 0; idx < productsOfDay.size(); idx++)
+		{
+			auto product = productsOfDay.at(idx);
+			if (product->GetJudge() == _T("OK"))
+				okCount++;
+
+			else if (product->GetJudge() == _T("NG"))
+				ngCount++;
+
+			else
+				naCount++;
+		}
+
+		auto product = productsOfDay.at(0);
+		m_gridTotalCount->SetRowLabelValue(row, product->GetTimeStamp().FormatISODate());
+		m_gridTotalCount->SetCellValue(row, 0, wxString::Format("%08d", (int)productsOfDay.size()));
+		m_gridTotalCount->SetCellValue(row, 1, wxString::Format("%08d", okCount));
+		m_gridTotalCount->SetCellValue(row, 2, wxString::Format("%08d", ngCount));
+	}
 }

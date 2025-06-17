@@ -69,6 +69,7 @@
           cell_vert_alignment="wxALIGN_CENTER"
           cols="3"
           drag_grid_size="1"
+          row_label_size="100"
           var_name="m_gridTotalCount" />
       </node>
     </node>

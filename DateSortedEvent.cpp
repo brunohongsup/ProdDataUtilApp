@@ -3,11 +3,16 @@
 
 wxDEFINE_EVENT(wxEVT_UPDATE_DATE_SORTED_RESULTS, DateSortedEvent);
 
-DateSortedEvent::DateSortedEvent(int id, const std::shared_ptr<DateTable>& table)
-	: wxCommandEvent(wxEVT_UPDATE_DATE_SORTED_RESULTS,id)
+DateSortedEvent::DateSortedEvent(const std::shared_ptr<DateTable>& table)
+	: wxCommandEvent(wxEVT_UPDATE_DATE_SORTED_RESULTS)
 	, m_table(table)
 {
 	
+}
+
+DateSortedEvent::~DateSortedEvent()
+{
+	const int x = 10;
 }
 
 std::shared_ptr<DateTable> DateSortedEvent::GetData() const
@@ -17,5 +22,5 @@ std::shared_ptr<DateTable> DateSortedEvent::GetData() const
 
 wxEvent* DateSortedEvent::Clone() const
 {
-	return new DateSortedEvent(GetId(), m_table);
+	return new DateSortedEvent(m_table);
 }
