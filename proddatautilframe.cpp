@@ -7,7 +7,14 @@
 
 // clang-format off
 
+#if wxCHECK_VERSION(3, 1, 6)
+    #include <wx/bmpbndl.h>
+#else
+    #include <wx/bitmap.h>
+#endif
+
 #include <wx/sizer.h>
+#include <wx/statbmp.h>
 
 #include "proddatautilframe.h"
 
@@ -58,6 +65,8 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
 
     flex_grid_sizer->Add(box_sizer, wxSizerFlags().Border(wxALL));
 
+    auto* box_sizer4 = new wxBoxSizer(wxHORIZONTAL);
+
     m_gridProduct = new wxGrid(this, wxID_ANY);
     {
         m_gridProduct->CreateGrid(5, 3);
@@ -73,7 +82,15 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
         m_gridProduct->SetRowLabelAlignment(wxALIGN_CENTER, wxALIGN_CENTER);
         m_gridProduct->SetRowLabelSize(wxGRID_AUTOSIZE);
     }
-    flex_grid_sizer->Add(m_gridProduct, wxSizerFlags().Border(wxALL));
+    box_sizer4->Add(m_gridProduct, wxSizerFlags().Border(wxALL));
+
+    m_tree_ctrlProduct = new wxTreeCtrl(this, wxID_ANY);
+    box_sizer4->Add(m_tree_ctrlProduct, wxSizerFlags().Border(wxALL));
+
+    auto* bmp = new wxStaticBitmap(this, wxID_ANY, wxNullBitmap);
+    box_sizer4->Add(bmp, wxSizerFlags().Border(wxALL));
+
+    flex_grid_sizer->Add(box_sizer4, wxSizerFlags().Border(wxALL));
 
     m_gridTotalCount = new wxGrid(this, wxID_ANY);
     {

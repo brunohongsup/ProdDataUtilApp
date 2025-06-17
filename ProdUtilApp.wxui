@@ -55,13 +55,22 @@
           </node>
         </node>
         <node
-          class="wxGrid"
-          cell_fit="clip"
-          cell_horiz_alignment="wxALIGN_RIGHT"
-          cell_vert_alignment="wxALIGN_CENTER"
-          cols="3"
-          drag_grid_size="1"
-          var_name="m_gridProduct" />
+          class="wxBoxSizer"
+          var_name="box_sizer4">
+          <node
+            class="wxGrid"
+            cell_fit="clip"
+            cell_horiz_alignment="wxALIGN_RIGHT"
+            cell_vert_alignment="wxALIGN_CENTER"
+            cols="3"
+            drag_grid_size="1"
+            var_name="m_gridProduct" />
+          <node
+            class="wxTreeCtrl"
+            var_name="m_tree_ctrlProduct" />
+          <node
+            class="wxStaticBitmap" />
+        </node>
         <node
           class="wxGrid"
           cell_fit="clip"

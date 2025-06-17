@@ -18,6 +18,7 @@
 #include <wx/menu.h>
 #include <wx/stattext.h>
 #include <wx/statusbr.h>
+#include <wx/treectrl.h>
 #include <wx/stockitem.h>
 
 class ProdDataUtilFrameBase : public wxFrame
@@ -49,6 +50,7 @@ protected:
     wxStaticText* m_static_text2;
     wxStaticText* m_static_text;
     wxStatusBar* m_statusBar;
+    wxTreeCtrl* m_tree_ctrlProduct;
 };
 
 // ************* End of generated code ***********
