@@ -11,7 +11,7 @@
 
 #include "proddatautilframe.h"
 
-bool ProdDataUtilFrame::Create(wxWindow* parent, wxWindowID id, const wxString& title,
+bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxString& title,
     const wxPoint& pos, const wxSize& size, long style, const wxString &name)
 {
 
@@ -27,8 +27,50 @@ bool ProdDataUtilFrame::Create(wxWindow* parent, wxWindowID id, const wxString& 
 
     m_statusBar = CreateStatusBar();
 
-    auto* box_sizer = new wxBoxSizer(wxVERTICAL);
-    SetSizerAndFit(box_sizer);
+    auto* grid_sizer = new wxGridSizer(2, 0, 0);
+
+    auto* box_sizer2 = new wxBoxSizer(wxHORIZONTAL);
+
+    m_static_text = new wxStaticText(this, wxID_ANY, "Begin");
+    box_sizer2->Add(m_static_text, wxSizerFlags().Border(wxALL));
+
+    m_date_pickerBegin = new wxDatePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition,
+        wxDefaultSize, wxDP_DROPDOWN|wxDP_SHOWCENTURY);
+    box_sizer2->Add(m_date_pickerBegin, wxSizerFlags().Border(wxALL));
+
+    grid_sizer->Add(box_sizer2, wxSizerFlags().Border(wxALL));
+
+    auto* box_sizer3 = new wxBoxSizer(wxHORIZONTAL);
+
+    m_static_text2 = new wxStaticText(this, wxID_ANY, "End");
+    box_sizer3->Add(m_static_text2, wxSizerFlags().Border(wxALL));
+
+    m_date_pickerEnd = new wxDatePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition,
+        wxDefaultSize, wxDP_DROPDOWN|wxDP_SHOWCENTURY|wxDP_DEFAULT);
+    box_sizer3->Add(m_date_pickerEnd, wxSizerFlags().Border(wxALL));
+
+    m_btnSearch = new wxButton(this, wxID_ANY, "Search");
+    box_sizer3->Add(m_btnSearch, wxSizerFlags().Border(wxALL));
+
+    grid_sizer->Add(box_sizer3, wxSizerFlags().Border(wxALL));
+
+    m_grid = new wxGrid(this, wxID_ANY);
+    {
+        m_grid->CreateGrid(5, 5);
+        m_grid->EnableDragGridSize(false);
+        m_grid->SetMargins(0, 0);
+        #if wxCHECK_VERSION(3, 1, 4)
+            m_grid->SetDefaultCellFitMode(wxGridFitMode::Clip());
+        #endif
+        m_grid->SetDefaultCellAlignment(wxALIGN_RIGHT, wxALIGN_CENTER);
+        m_grid->SetColLabelAlignment(wxALIGN_CENTER, wxALIGN_CENTER);
+        m_grid->SetColLabelSize(wxGRID_AUTOSIZE);
+
+        m_grid->SetRowLabelAlignment(wxALIGN_CENTER, wxALIGN_CENTER);
+        m_grid->SetRowLabelSize(wxGRID_AUTOSIZE);
+    }
+    grid_sizer->Add(m_grid, wxSizerFlags().Border(wxALL));
+    SetSizerAndFit(grid_sizer);
 
     Centre(wxBOTH);
 

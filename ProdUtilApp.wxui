@@ -6,7 +6,7 @@
     wxWidgets_version="3.1">
     <node
       class="wxFrame"
-      class_name="ProdDataUtilFrame"
+      class_name="ProdDataUtilFrameBase"
       base_file="proddatautilframe"
       derived_class_name="ProdDataUtilFrameDerived"
       derived_file="proddatautilframe_derived">
@@ -20,9 +20,41 @@
       <node
         class="wxStatusBar" />
       <node
-        class="wxBoxSizer"
-        orientation="wxVERTICAL"
-        flags="wxEXPAND" />
+        class="wxGridSizer">
+        <node
+          class="wxBoxSizer"
+          var_name="box_sizer2">
+          <node
+            class="wxStaticText"
+            label="Begin"
+            var_name="m_static_text" />
+          <node
+            class="wxDatePickerCtrl"
+            style="wxDP_DROPDOWN|wxDP_SHOWCENTURY"
+            var_name="m_date_pickerBegin" />
+        </node>
+        <node
+          class="wxBoxSizer"
+          var_name="box_sizer3">
+          <node
+            class="wxStaticText"
+            label="End"
+            var_name="m_static_text2" />
+          <node
+            class="wxDatePickerCtrl"
+            style="wxDP_DROPDOWN|wxDP_SHOWCENTURY|wxDP_DEFAULT"
+            var_name="m_date_pickerEnd" />
+          <node
+            class="wxButton"
+            label="Search"
+            var_name="m_btnSearch" />
+        </node>
+        <node
+          class="wxGrid"
+          cell_fit="clip"
+          cell_horiz_alignment="wxALIGN_RIGHT"
+          cell_vert_alignment="wxALIGN_CENTER" />
+      </node>
     </node>
   </node>
 </wxUiEditorData>

@@ -3,7 +3,10 @@
 
 #include "ProdDataUtilApp.h"
 #include "framework.h"
-#include "ProdDataUtilFrame.h"
+#include "proddatautilframe.h"
+#include "ProdDataUtilFrameDerived.h"
+
+wxIMPLEMENT_APP(ProdDataUtilApp);
 
 bool ProdDataUtilApp::OnInit()
 {
@@ -11,8 +14,10 @@ bool ProdDataUtilApp::OnInit()
     if (!wxApp::OnInit())
         return false;
 
-    auto frame = new ProdDataUtilFrame();
-    frame->Show();
+	wxInitAllImageHandlers();
+
+    const auto frame = new ProdDataUtilFrameDerived(nullptr, wxID_ANY, "ProdDataUtilApp");
+	frame->Show();
     return true;
 }
 

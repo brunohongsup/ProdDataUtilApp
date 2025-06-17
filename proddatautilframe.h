@@ -9,16 +9,22 @@
 
 #pragma once
 
+#include <wx/button.h>
+#include <wx/datectrl.h>
+#include <wx/dateevt.h>
 #include <wx/frame.h>
 #include <wx/gdicmn.h>
+#include <wx/grid.h>
 #include <wx/menu.h>
+#include <wx/stattext.h>
 #include <wx/statusbr.h>
+#include <wx/stockitem.h>
 
-class ProdDataUtilFrame : public wxFrame
+class ProdDataUtilFrameBase : public wxFrame
 {
 public:
-    ProdDataUtilFrame() {}
-    ProdDataUtilFrame(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString,
+    ProdDataUtilFrameBase() {}
+    ProdDataUtilFrameBase(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString,
         const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
         long style = wxDEFAULT_FRAME_STYLE, const wxString &name = wxFrameNameStr)
     {
@@ -33,8 +39,14 @@ protected:
 
     // Class member variables
 
+    wxButton* m_btnSearch;
+    wxDatePickerCtrl* m_date_pickerBegin;
+    wxDatePickerCtrl* m_date_pickerEnd;
+    wxGrid* m_grid;
     wxMenu* m_menu;
     wxMenuBar* m_menubar;
+    wxStaticText* m_static_text2;
+    wxStaticText* m_static_text;
     wxStatusBar* m_statusBar;
 };
 

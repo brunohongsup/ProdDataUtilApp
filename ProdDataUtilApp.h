@@ -9,3 +9,4 @@ public:
 	bool OnInit() override;
 };
 
+DECLARE_APP(ProdDataUtilApp)
