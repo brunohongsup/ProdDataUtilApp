@@ -5,10 +5,12 @@ Product::Product(const wxString& strId, const wxDateTime& timeStamp, const EJudg
     , m_timeStamp(timeStamp)
     , m_eJudge(eJudge)
 {
+
 }
 
 Product::~Product()
 {
+	// Destructor logic if needed
 }
 
 const wxString& Product::GetId() const

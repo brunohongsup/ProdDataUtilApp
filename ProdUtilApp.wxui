@@ -22,7 +22,8 @@
       <node
         class="wxBoxSizer"
         orientation="wxVERTICAL"
-        var_name="box_sizer5">
+        var_name="box_sizer5"
+        flags="wxEXPAND">
         <node
           class="wxBoxSizer"
           flags="wxEXPAND">
@@ -74,20 +75,25 @@
             class="wxTreeCtrl"
             var_name="m_tree_ctrlProduct"
             size="200,200d" />
-          <node
-            class="wxStaticBitmap"
-            var_name="m_img"
-            size="200,200d" />
         </node>
         <node
-          class="wxGrid"
-          cell_fit="clip"
-          cell_horiz_alignment="wxALIGN_RIGHT"
-          cell_vert_alignment="wxALIGN_CENTER"
-          cols="3"
-          drag_grid_size="1"
-          row_label_size="100"
-          var_name="m_gridTotalCount" />
+          class="wxBoxSizer"
+          var_name="box_sizer6">
+          <node
+            class="wxGrid"
+            cell_fit="clip"
+            cell_horiz_alignment="wxALIGN_RIGHT"
+            cell_vert_alignment="wxALIGN_CENTER"
+            cols="3"
+            drag_grid_size="1"
+            row_label_size="100"
+            var_name="m_gridTotalCount" />
+        </node>
+        <node
+          class="wxStaticBitmap"
+          class_access="protected:"
+          var_name="m_img"
+          size="500,500d" />
       </node>
     </node>
   </node>

@@ -16,10 +16,11 @@
 #include <wx/gdicmn.h>
 #include <wx/grid.h>
 #include <wx/menu.h>
+#include <wx/statbmp.h>
 #include <wx/stattext.h>
 #include <wx/statusbr.h>
 #include <wx/treectrl.h>
-
+#include "wx/stockitem.h"
 class ProdDataUtilFrameBase : public wxFrame
 {
 public:
@@ -46,6 +47,7 @@ protected:
     wxGrid* m_gridTotalCount;
     wxMenu* m_menu;
     wxMenuBar* m_menubar;
+    wxStaticBitmap* m_img;
     wxStaticText* m_static_text2;
     wxStaticText* m_static_text;
     wxStatusBar* m_statusBar;

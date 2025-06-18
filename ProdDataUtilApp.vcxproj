@@ -135,6 +135,7 @@
     <ClInclude Include="proddatautilframe.h" />
     <ClInclude Include="ProdDataUtilFrameDerived.h" />
     <ClInclude Include="Product.h" />
+    <ClInclude Include="ProductTreeItemData.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SearchManager.h" />
     <ClInclude Include="targetver.h" />

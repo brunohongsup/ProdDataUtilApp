@@ -14,7 +14,6 @@
 #endif
 
 #include <wx/sizer.h>
-#include <wx/statbmp.h>
 
 #include "proddatautilframe.h"
 
@@ -88,11 +87,9 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
         ConvertDialogToPixels(wxSize(200, 200)));
     box_sizer4->Add(m_tree_ctrlProduct, wxSizerFlags().Border(wxALL));
 
-    auto* m_img = new wxStaticBitmap(this, wxID_ANY, wxNullBitmap, wxDefaultPosition,
-        ConvertDialogToPixels(wxSize(200, 200)));
-    box_sizer4->Add(m_img, wxSizerFlags().Border(wxALL));
-
     box_sizer5->Add(box_sizer4, wxSizerFlags().Expand().Border(wxALL));
+
+    auto* box_sizer6 = new wxBoxSizer(wxHORIZONTAL);
 
     m_gridTotalCount = new wxGrid(this, wxID_ANY);
     {
@@ -109,7 +106,13 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
         m_gridTotalCount->SetRowLabelAlignment(wxALIGN_CENTER, wxALIGN_CENTER);
         m_gridTotalCount->SetRowLabelSize(100);
     }
-    box_sizer5->Add(m_gridTotalCount, wxSizerFlags().Border(wxALL));
+    box_sizer6->Add(m_gridTotalCount, wxSizerFlags().Border(wxALL));
+
+    box_sizer5->Add(box_sizer6, wxSizerFlags().Border(wxALL));
+
+    m_img = new wxStaticBitmap(this, wxID_ANY, wxNullBitmap, wxDefaultPosition,
+        ConvertDialogToPixels(wxSize(500, 500)));
+    box_sizer5->Add(m_img, wxSizerFlags().Border(wxALL));
     SetSizerAndFit(box_sizer5);
 
     Centre(wxBOTH);

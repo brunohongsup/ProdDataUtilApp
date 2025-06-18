@@ -1,5 +1,6 @@
 ﻿#include "ProdDataUtilFrameDerived.h"
 #include"ProdDataUtilApp.h"
+#include "ProductTreeItemData.h"
 #include "SearchManager.h"
 
 wxDEFINE_EVENT(wxEVT_UPDATE_SEARCH_RESULTS, wxCommandEvent);
@@ -150,7 +151,7 @@ void ProdDataUtilFrameDerived::OnUpdateSearchResults(wxCommandEvent&)
 		// Add product as leaf node
 		wxString productStr = wxString::Format("%s", product->GetId());
 		wxTreeItemId productNode = findOrAddChild(judgeNode, productStr);
-		m_tree_ctrlProduct->SetItemData(productNode, reinterpret_cast<wxTreeItemData*>(product.get()));
+		m_tree_ctrlProduct->SetItemData(productNode, new ProductTreeItemData(product));
 	}
 	
 	// Expand the tree to show the structure
@@ -202,24 +203,26 @@ void ProdDataUtilFrameDerived::OnTreeItemSelected(wxTreeEvent& event)
     if (IsLeafNode(item))
     {
 	    // Get the item data
-	    auto data = reinterpret_cast<Product*>(
-		    m_tree_ctrlProduct->GetItemData(item));
-    	
+	    auto data = dynamic_cast<ProductTreeItemData*>(m_tree_ctrlProduct->GetItemData(item));
 		if (data == nullptr)
 			return;
 
-    	for (int row = 0; row < m_gridProduct->GetNumberRows(); ++row) {
-    		if (m_gridProduct->GetCellValue(row, 1) == data->GetId()) { // Assuming ID is in column 1
-    			m_gridProduct->SelectRow(row);
-    			m_gridProduct->MakeCellVisible(row, 0);
-    			break;
-    		}
-    	}
+	    for (int row = 0; row < m_gridProduct->GetNumberRows(); ++row)
+	    {
+		    if (m_gridProduct->GetCellValue(row, 1) == data->GetId())
+		    {
+			    // Assuming ID is in column 1
+			    m_gridProduct->SelectRow(row);
+			    m_gridProduct->MakeCellVisible(row, 0);
+			    break;
+		    }
+	    }
 
-    	const auto& filePaths = data->GetFiles();
+    	auto product = data->GetProduct();
+    	const auto& filePaths = product->GetFiles();
     	wxString file{};
     	for (const auto& filePath : filePaths) {
-    		wxFileName fileName(filePath);
+     		wxFileName fileName(filePath);
     		wxString extension = fileName.GetExt().Lower();
     		wxString baseName = fileName.GetName().Lower();
         
@@ -235,8 +238,20 @@ void ProdDataUtilFrameDerived::OnTreeItemSelected(wxTreeEvent& event)
     		}
     	}
 
-	    if (wxFile::Exists(file))
-	    {
+	    if (wxFile::Exists(file)) {
+			wxImage image;
+			if (image.LoadFile(file)) {
+				wxSize imageSize = image.GetSize();
+				m_img->SetSize(imageSize);
+				
+				// Create bitmap from original image without scaling
+				wxBitmap bitmap = wxBitmap(image);
+				m_img->SetBitmap(bitmap);
+				
+				// Update the layout to accommodate the new size
+				m_img->GetParent()->Layout();
+
+			}
 	    }
     }
     

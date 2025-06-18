@@ -21,10 +21,12 @@ public:
 
 	// In your header file (likely ProdDataUtilFrameDerived.h)
 	void OnTreeItemSelected(wxTreeEvent& event);
+	
 	void OnLeafNodeClicked(const Product& product);
 
 	// Helper method to check if item is leaf
 	bool IsLeafNode(wxTreeItemId item) const;
+
 private:
 
 	void HighlightProductInGrid(const Product& product) const;
