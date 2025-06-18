@@ -1,4 +1,6 @@
 ﻿#pragma once
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "proddatautilframe.h"
 #include "DateSortedEvent.h"
 #include <wx/file.h>
@@ -27,9 +29,20 @@ public:
 	// Helper method to check if item is leaf
 	bool IsLeafNode(wxTreeItemId item) const;
 
+	// Spin button event handler for image navigation
+	void OnSpinButton(wxSpinEvent& event);
+
 private:
 
 	void HighlightProductInGrid(const Product& product) const;
+
+	// Helper method to load and display image
+	void loadImg(const wxString& filePath);
+
+	// Member variables to track current state
+	std::shared_ptr<Product> m_currentProduct;
+	std::vector<wxString> m_currentImageFiles;
+	int m_currentImageIndex;
 
 	wxDECLARE_EVENT_TABLE();
 };

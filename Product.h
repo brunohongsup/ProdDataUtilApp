@@ -1,4 +1,5 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 
 #include <memory>
 #include <vector>
@@ -36,6 +37,9 @@ public:
 	void AddFile(const wxString& strFilePath);
 
 	wxString GetJudge() const;
+
+	// Get image files with "overlay" in the filename
+	std::vector<wxString> GetOverlayImageFiles() const;
 
 private:
 	wxString m_Id;

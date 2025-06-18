@@ -1,4 +1,8 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "Product.h"
+#include <wx/filename.h>
+#include <wx/file.h>
 
 Product::Product(const wxString& strId, const wxDateTime& timeStamp, const EJudge eJudge)
     : m_Id(strId)
@@ -51,5 +55,26 @@ wxString Product::GetJudge() const
 
     else
         return _T("N/A");
+}
+
+std::vector<wxString> Product::GetOverlayImageFiles() const
+{
+    std::vector<wxString> imageFiles;
+    
+    for (const auto& filePath : m_vctFilePath) {
+        wxFileName fileName(filePath);
+        wxString extension = fileName.GetExt().Lower();
+        wxString baseName = fileName.GetName().Lower();
+        
+        // Check if it's a JPG file with "overlay" in the filename
+        if ((extension == "jpg" || extension == "jpeg") && baseName.Contains("overlay")) {
+            // Verify file exists
+            if (wxFile::Exists(filePath)) {
+                imageFiles.push_back(filePath);
+            }
+        }
+    }
+    
+    return imageFiles;
 }
 

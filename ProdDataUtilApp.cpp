@@ -1,6 +1,8 @@
 // ProdDataUtilApp.cpp : Defines the entry point for the application.
 //
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "ProdDataUtilApp.h"
 #include "framework.h"
 #include "proddatautilframe.h"

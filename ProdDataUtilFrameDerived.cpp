@@ -1,4 +1,7 @@
-﻿#include "ProdDataUtilFrameDerived.h"
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include "ProdDataUtilFrameDerived.h"
 #include"ProdDataUtilApp.h"
 #include "ProductTreeItemData.h"
 #include "SearchManager.h"
@@ -90,6 +93,12 @@ ProdDataUtilFrameDerived::ProdDataUtilFrameDerived(wxWindow* parent, wxWindowID 
 	// Bind tree selection event
 	m_tree_ctrlProduct->Bind(wxEVT_TREE_SEL_CHANGED,
 	                         &ProdDataUtilFrameDerived::OnTreeItemSelected, this);
+
+	// Bind spin button event for image navigation
+	m_spin_btn->Bind(wxEVT_SPIN, &ProdDataUtilFrameDerived::OnSpinButton, this);
+
+	// Initialize member variables
+	m_currentImageIndex = 0;
 }
 
 void ProdDataUtilFrameDerived::OnUpdateSearchResults(wxCommandEvent&)
@@ -217,42 +226,25 @@ void ProdDataUtilFrameDerived::OnTreeItemSelected(wxTreeEvent& event)
 	    }
 
     	auto product = data->GetProduct();
-    	const auto& filePaths = product->GetFiles();
-    	wxString file{};
-    	for (const auto& filePath : filePaths) {
-     		wxFileName fileName(filePath);
-    		wxString extension = fileName.GetExt().Lower();
-    		wxString baseName = fileName.GetName().Lower();
-        
-    		// Check if it's a JPG file with "overlay" in the filename
-    		if (extension == "jpg" || extension == "jpeg") {
-    			if (baseName.Contains("overlay")) {
-    				// Verify file exists
-    				if (wxFile::Exists(filePath)) {
-    					file = filePath;
-    					break;
-    				}
-    			}
-    		}
+    	
+    	// Store current product and get image files
+    	m_currentProduct = product;
+    	m_currentImageFiles = product->GetOverlayImageFiles();
+    	m_currentImageIndex = 0;
+    	
+    	// Update spin button range and value
+    	if (!m_currentImageFiles.empty()) {
+    		m_spin_btn->SetRange(0, m_currentImageFiles.size() - 1);
+    		m_spin_btn->SetValue(0);
+    		
+    		// Load the first image
+    		loadImg(m_currentImageFiles[0]);
+    	} else {
+    		// No images found, clear the display
+    		m_spin_btn->SetRange(0, 0);
+    		m_spin_btn->SetValue(0);
+    		m_img->SetBitmap(wxNullBitmap);
     	}
-
-	    if (wxFile::Exists(file)) {
-			wxImage image;
-			if (image.LoadFile(file)) {
-				// Get the current size of the wxStaticBitmap control
-				wxSize controlSize = m_img->GetSize();
-				
-				// Resize the image to fit the control while maintaining aspect ratio
-				wxImage resizedImage = image.Scale(controlSize.GetWidth(), controlSize.GetHeight(), 
-					wxIMAGE_QUALITY_HIGH);
-				
-				// Create bitmap from resized image
-				wxBitmap bitmap = wxBitmap(resizedImage);
-				m_img->SetBitmap(bitmap);
-				
-				// No need to change the control size or layout since we're fitting the image to the control
-			}
-	    }
     }
     
     event.Skip(); // Allow other handlers to process the event
@@ -281,6 +273,39 @@ void ProdDataUtilFrameDerived::HighlightProductInGrid(const Product& product) co
             m_gridProduct->SelectRow(row);
             m_gridProduct->MakeCellVisible(row, 0);
             break;
+        }
+    }
+}
+
+void ProdDataUtilFrameDerived::OnSpinButton(wxSpinEvent& event)
+{
+    // Get the new index from the spin button
+    int newIndex = m_spin_btn->GetValue();
+    
+    // Ensure the index is within bounds
+    if (newIndex >= 0 && newIndex < m_currentImageFiles.size()) {
+        m_currentImageIndex = newIndex;
+        loadImg(m_currentImageFiles[m_currentImageIndex]);
+    }
+    
+    event.Skip();
+}
+
+void ProdDataUtilFrameDerived::loadImg(const wxString& filePath)
+{
+    if (wxFile::Exists(filePath)) {
+        wxImage image;
+        if (image.LoadFile(filePath)) {
+            // Get the current size of the wxStaticBitmap control
+            wxSize controlSize = m_img->GetSize();
+            
+            // Resize the image to fit the control while maintaining aspect ratio
+            wxImage resizedImage = image.Scale(controlSize.GetWidth(), controlSize.GetHeight(), 
+                wxIMAGE_QUALITY_HIGH);
+            
+            // Create bitmap from resized image
+            wxBitmap bitmap = wxBitmap(resizedImage);
+            m_img->SetBitmap(bitmap);
         }
     }
 }
