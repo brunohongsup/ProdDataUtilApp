@@ -67,7 +67,7 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
 
     auto* box_sizer4 = new wxBoxSizer(wxHORIZONTAL);
 
-    m_gridProduct = new wxGrid(this, wxID_ANY);
+    m_gridProduct = new wxGrid(this, wxID_ANY, wxDefaultPosition, ConvertDialogToPixels(wxSize(150, 200)));
     {
         m_gridProduct->CreateGrid(5, 3);
         m_gridProduct->EnableDragGridSize(true);
@@ -84,11 +84,13 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
     }
     box_sizer4->Add(m_gridProduct, wxSizerFlags().Border(wxALL));
 
-    m_tree_ctrlProduct = new wxTreeCtrl(this, wxID_ANY);
+    m_tree_ctrlProduct = new wxTreeCtrl(this, wxID_ANY, wxDefaultPosition,
+        ConvertDialogToPixels(wxSize(200, 200)));
     box_sizer4->Add(m_tree_ctrlProduct, wxSizerFlags().Border(wxALL));
 
-    auto* bmp = new wxStaticBitmap(this, wxID_ANY, wxNullBitmap);
-    box_sizer4->Add(bmp, wxSizerFlags().Border(wxALL));
+    auto* m_img = new wxStaticBitmap(this, wxID_ANY, wxNullBitmap, wxDefaultPosition,
+        ConvertDialogToPixels(wxSize(200, 200)));
+    box_sizer4->Add(m_img, wxSizerFlags().Border(wxALL));
 
     box_sizer5->Add(box_sizer4, wxSizerFlags().Expand().Border(wxALL));
 

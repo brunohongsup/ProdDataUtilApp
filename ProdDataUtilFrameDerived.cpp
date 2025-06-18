@@ -26,6 +26,8 @@ ProdDataUtilFrameDerived::ProdDataUtilFrameDerived(wxWindow* parent, wxWindowID 
 
 	m_tree_ctrlProduct->AddRoot(_T("IMAGE"));
 
+	
+
 	auto initiateSearch  = [this](wxCommandEvent&)
 	{
 		auto searchManager = SearchManager::GetInstance();
@@ -85,6 +87,10 @@ ProdDataUtilFrameDerived::ProdDataUtilFrameDerived(wxWindow* parent, wxWindowID 
 	m_btnSearch->Bind(wxEVT_BUTTON, initiateSearch);
 	Bind(wxEVT_UPDATE_SEARCH_RESULTS, &ProdDataUtilFrameDerived::OnUpdateSearchResults, this);
 	Bind(wxEVT_UPDATE_DATE_SORTED_RESULTS, &ProdDataUtilFrameDerived::OnUpdateDateSortedResults, this);
+
+	// Bind tree selection event
+	m_tree_ctrlProduct->Bind(wxEVT_TREE_SEL_CHANGED,
+	                         &ProdDataUtilFrameDerived::OnTreeItemSelected, this);
 }
 
 void ProdDataUtilFrameDerived::OnUpdateSearchResults(wxCommandEvent&)
@@ -100,17 +106,19 @@ void ProdDataUtilFrameDerived::OnUpdateSearchResults(wxCommandEvent&)
 	if (rowSize < products.size())
 		m_gridProduct->AppendRows(products.size() - rowSize);
 
-	auto findOrAddChild = [this](wxTreeItemId parent, const std::shared_ptr<Product>& product)
+	auto findOrAddChild = [this](wxTreeItemId parent, const wxString& text) -> wxTreeItemId
 	{
-		//ToDo Implement Here
 		wxTreeItemIdValue cookie;
 		wxTreeItemId child = m_tree_ctrlProduct->GetFirstChild(parent, cookie);
-		while (child.IsOk()) {
-			if (tree->GetItemText(child) == text)
+		while (child.IsOk())
+		{
+			if (m_tree_ctrlProduct->GetItemText(child) == text)
 				return child;
-			child = tree->GetNextChild(parent, cookie);
+			
+			child = m_tree_ctrlProduct->GetNextChild(parent, cookie);
 		}
-		return tree->AppendItem(parent, text);
+		
+		return m_tree_ctrlProduct->AppendItem(parent, text);
 	};
 
 	for (size_t row = 0; row < products.size(); row++)
@@ -120,13 +128,33 @@ void ProdDataUtilFrameDerived::OnUpdateSearchResults(wxCommandEvent&)
 		m_gridProduct->SetCellValue(row, colIdx++, product->GetTimeStamp().FormatISODate());
 		m_gridProduct->SetCellValue(row, colIdx++, product->GetId());
 		m_gridProduct->SetCellValue(row, colIdx++, product->GetJudge());
+		
 		auto timeStamp = product->GetTimeStamp();
 		int year = timeStamp.GetYear();
-		int month = timeStamp.GetMonth();
+		int month = timeStamp.GetMonth() + 1; // wxDateTime months are 0-based
 		int day = timeStamp.GetDay();
-		wxTreeItemIdValue cookie;
-		findOrAddChild(rootId, product);		
+		
+		// Create hierarchical tree structure: Year -> Month -> Day -> Product
+		wxString yearStr = wxString::Format("%d", year);
+		wxTreeItemId yearNode = findOrAddChild(rootId, yearStr);
+		
+		wxString monthStr = wxString::Format("%02d", month);
+		wxTreeItemId monthNode = findOrAddChild(yearNode, monthStr);
+		
+		wxString dayStr = wxString::Format("%02d", day);
+		wxTreeItemId dayNode = findOrAddChild(monthNode, dayStr);
+		
+		wxString judgeStr = wxString::Format("%s", product->GetJudge());
+		wxTreeItemId judgeNode = findOrAddChild(dayNode, judgeStr);
+
+		// Add product as leaf node
+		wxString productStr = wxString::Format("%s", product->GetId());
+		wxTreeItemId productNode = findOrAddChild(judgeNode, productStr);
+		m_tree_ctrlProduct->SetItemData(productNode, reinterpret_cast<wxTreeItemData*>(product.get()));
 	}
+	
+	// Expand the tree to show the structure
+	m_tree_ctrlProduct->ExpandAll();
 }
 
 void ProdDataUtilFrameDerived::OnUpdateDateSortedResults(DateSortedEvent& event)
@@ -161,4 +189,83 @@ void ProdDataUtilFrameDerived::OnUpdateDateSortedResults(DateSortedEvent& event)
 		m_gridTotalCount->SetCellValue(row, 1, wxString::Format("%08d", okCount));
 		m_gridTotalCount->SetCellValue(row, 2, wxString::Format("%08d", ngCount));
 	}
+}
+
+void ProdDataUtilFrameDerived::OnTreeItemSelected(wxTreeEvent& event)
+{
+    wxTreeItemId item = event.GetItem();
+    
+    if (!item.IsOk())
+        return;
+    
+    // Check if this is a leaf node
+    if (IsLeafNode(item))
+    {
+	    // Get the item data
+	    auto data = reinterpret_cast<Product*>(
+		    m_tree_ctrlProduct->GetItemData(item));
+    	
+		if (data == nullptr)
+			return;
+
+    	for (int row = 0; row < m_gridProduct->GetNumberRows(); ++row) {
+    		if (m_gridProduct->GetCellValue(row, 1) == data->GetId()) { // Assuming ID is in column 1
+    			m_gridProduct->SelectRow(row);
+    			m_gridProduct->MakeCellVisible(row, 0);
+    			break;
+    		}
+    	}
+
+    	const auto& filePaths = data->GetFiles();
+    	wxString file{};
+    	for (const auto& filePath : filePaths) {
+    		wxFileName fileName(filePath);
+    		wxString extension = fileName.GetExt().Lower();
+    		wxString baseName = fileName.GetName().Lower();
+        
+    		// Check if it's a JPG file with "overlay" in the filename
+    		if (extension == "jpg" || extension == "jpeg") {
+    			if (baseName.Contains("overlay")) {
+    				// Verify file exists
+    				if (wxFile::Exists(filePath)) {
+    					file = filePath;
+    					break;
+    				}
+    			}
+    		}
+    	}
+
+	    if (wxFile::Exists(file))
+	    {
+	    }
+    }
+    
+    event.Skip(); // Allow other handlers to process the event
+}
+
+bool ProdDataUtilFrameDerived::IsLeafNode(wxTreeItemId item) const
+{
+    // A leaf node has no children
+    return !m_tree_ctrlProduct->ItemHasChildren(item);
+}
+
+void ProdDataUtilFrameDerived::OnLeafNodeClicked(const Product& product)
+{
+    // Example actions you might want to perform:
+    
+    // 1. Highlight corresponding grid row
+    HighlightProductInGrid(product);
+	
+}
+
+void ProdDataUtilFrameDerived::HighlightProductInGrid(const Product& product) const
+{
+    // Find and highlight the corresponding row in the grid
+    for (int row = 0; row < m_gridProduct->GetNumberRows(); ++row) {
+        if (m_gridProduct->GetCellValue(row, 1) == product.GetId()) { // Assuming ID is in column 1
+            m_gridProduct->SelectRow(row);
+            m_gridProduct->MakeCellVisible(row, 0);
+            break;
+        }
+    }
 }

@@ -68,12 +68,16 @@
             cell_vert_alignment="wxALIGN_CENTER"
             cols="3"
             drag_grid_size="1"
-            var_name="m_gridProduct" />
+            var_name="m_gridProduct"
+            size="150,200d" />
           <node
             class="wxTreeCtrl"
-            var_name="m_tree_ctrlProduct" />
+            var_name="m_tree_ctrlProduct"
+            size="200,200d" />
           <node
-            class="wxStaticBitmap" />
+            class="wxStaticBitmap"
+            var_name="m_img"
+            size="200,200d" />
         </node>
         <node
           class="wxGrid"
