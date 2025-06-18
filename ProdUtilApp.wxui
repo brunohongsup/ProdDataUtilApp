@@ -79,7 +79,8 @@
         </node>
         <node
           class="wxBoxSizer"
-          var_name="box_sizer6">
+          var_name="box_sizer6"
+          flags="wxEXPAND">
           <node
             class="wxGrid"
             cell_fit="clip"
@@ -92,10 +93,20 @@
             var_name="m_gridTotalCount" />
         </node>
         <node
-          class="wxStaticBitmap"
-          class_access="protected:"
-          var_name="m_img"
-          size="500,500d" />
+          class="wxBoxSizer"
+          orientation="wxVERTICAL"
+          var_name="box_sizer7">
+          <node
+            class="wxSpinButton"
+            style="wxSP_HORIZONTAL"
+            var_name="m_spin_btn"
+            window_style="0" />
+          <node
+            class="wxStaticBitmap"
+            class_access="protected:"
+            var_name="m_img"
+            size="500,200d" />
+        </node>
       </node>
     </node>
   </node>

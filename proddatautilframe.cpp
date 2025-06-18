@@ -110,11 +110,19 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
     }
     box_sizer6->Add(m_gridTotalCount, wxSizerFlags().Border(wxALL));
 
-    box_sizer5->Add(box_sizer6, wxSizerFlags().Border(wxALL));
+    box_sizer5->Add(box_sizer6, wxSizerFlags().Expand().Border(wxALL));
+
+    auto* box_sizer7 = new wxBoxSizer(wxVERTICAL);
+
+    m_spin_btn = new wxSpinButton(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_HORIZONTAL);
+    m_spin_btn->SetRange(0, 10);
+    box_sizer7->Add(m_spin_btn, wxSizerFlags().Border(wxALL));
 
     m_img = new wxStaticBitmap(this, wxID_ANY, wxNullBitmap, wxDefaultPosition,
-        ConvertDialogToPixels(wxSize(500, 500)));
-    box_sizer5->Add(m_img, wxSizerFlags().Border(wxALL));
+        ConvertDialogToPixels(wxSize(500, 200)));
+    box_sizer7->Add(m_img, wxSizerFlags().Border(wxALL));
+
+    box_sizer5->Add(box_sizer7, wxSizerFlags().Border(wxALL));
     SetSizerAndFit(box_sizer5);
 
     Centre(wxBOTH);

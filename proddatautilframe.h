@@ -16,6 +16,7 @@
 #include <wx/gdicmn.h>
 #include <wx/grid.h>
 #include <wx/menu.h>
+#include <wx/spinbutt.h>
 #include <wx/statbmp.h>
 #include <wx/stattext.h>
 #include <wx/statusbr.h>
@@ -47,6 +48,7 @@ protected:
     wxGrid* m_gridTotalCount;
     wxMenu* m_menu;
     wxMenuBar* m_menubar;
+    wxSpinButton* m_spin_btn;
     wxStaticBitmap* m_img;
     wxStaticText* m_static_text2;
     wxStaticText* m_static_text;

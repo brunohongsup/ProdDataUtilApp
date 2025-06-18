@@ -27,8 +27,6 @@ ProdDataUtilFrameDerived::ProdDataUtilFrameDerived(wxWindow* parent, wxWindowID 
 
 	m_tree_ctrlProduct->AddRoot(_T("IMAGE"));
 
-	
-
 	auto initiateSearch  = [this](wxCommandEvent&)
 	{
 		auto searchManager = SearchManager::GetInstance();
@@ -207,10 +205,9 @@ void ProdDataUtilFrameDerived::OnTreeItemSelected(wxTreeEvent& event)
 		if (data == nullptr)
 			return;
 
-    	auto product = data->GetProduct();
 	    for (int row = 0; row < m_gridProduct->GetNumberRows(); ++row)
 	    {
-		    if (m_gridProduct->GetCellValue(row, 1) == product->GetId())
+		    if (m_gridProduct->GetCellValue(row, 1) == data->GetId())
 		    {
 			    // Assuming ID is in column 1
 			    m_gridProduct->SelectRow(row);
@@ -219,6 +216,7 @@ void ProdDataUtilFrameDerived::OnTreeItemSelected(wxTreeEvent& event)
 		    }
 	    }
 
+    	auto product = data->GetProduct();
     	const auto& filePaths = product->GetFiles();
     	wxString file{};
     	for (const auto& filePath : filePaths) {
@@ -241,16 +239,18 @@ void ProdDataUtilFrameDerived::OnTreeItemSelected(wxTreeEvent& event)
 	    if (wxFile::Exists(file)) {
 			wxImage image;
 			if (image.LoadFile(file)) {
-				wxSize imageSize = image.GetSize();
-				m_img->SetSize(imageSize);
+				// Get the current size of the wxStaticBitmap control
+				wxSize controlSize = m_img->GetSize();
 				
-				// Create bitmap from original image without scaling
-				wxBitmap bitmap = wxBitmap(image);
+				// Resize the image to fit the control while maintaining aspect ratio
+				wxImage resizedImage = image.Scale(controlSize.GetWidth(), controlSize.GetHeight(), 
+					wxIMAGE_QUALITY_HIGH);
+				
+				// Create bitmap from resized image
+				wxBitmap bitmap = wxBitmap(resizedImage);
 				m_img->SetBitmap(bitmap);
 				
-				// Update the layout to accommodate the new size
-				m_img->GetParent()->Layout();
-
+				// No need to change the control size or layout since we're fitting the image to the control
 			}
 	    }
     }
