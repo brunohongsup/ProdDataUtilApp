@@ -214,9 +214,10 @@ void ProdDataUtilFrameDerived::OnTreeItemSelected(wxTreeEvent& event)
 		if (data == nullptr)
 			return;
 
+    	auto product = data->GetProduct();
 	    for (int row = 0; row < m_gridProduct->GetNumberRows(); ++row)
 	    {
-		    if (m_gridProduct->GetCellValue(row, 1) == data->GetId())
+		    if (m_gridProduct->GetCellValue(row, 1) == product->GetId())
 		    {
 			    // Assuming ID is in column 1
 			    m_gridProduct->SelectRow(row);
@@ -225,7 +226,6 @@ void ProdDataUtilFrameDerived::OnTreeItemSelected(wxTreeEvent& event)
 		    }
 	    }
 
-    	auto product = data->GetProduct();
     	
     	// Store current product and get image files
     	m_currentProduct = product;
