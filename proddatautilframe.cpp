@@ -69,6 +69,7 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
     m_gridProduct = new wxGrid(this, wxID_ANY, wxDefaultPosition, ConvertDialogToPixels(wxSize(150, 200)));
     {
         m_gridProduct->CreateGrid(5, 3);
+        m_gridProduct->EnableEditing(false);
         m_gridProduct->EnableDragGridSize(true);
         m_gridProduct->SetMargins(0, 0);
         #if wxCHECK_VERSION(3, 1, 4)
@@ -94,6 +95,7 @@ bool ProdDataUtilFrameBase::Create(wxWindow* parent, wxWindowID id, const wxStri
     m_gridTotalCount = new wxGrid(this, wxID_ANY);
     {
         m_gridTotalCount->CreateGrid(5, 3);
+        m_gridTotalCount->EnableEditing(false);
         m_gridTotalCount->EnableDragGridSize(true);
         m_gridTotalCount->SetMargins(0, 0);
         #if wxCHECK_VERSION(3, 1, 4)
