@@ -21,16 +21,3 @@ bool ProdDataUtilApp::OnInit()
 	frame->Show();
     return true;
 }
-
-int ProdDataUtilApp::OnExit()
-{
-	auto searchManager = SearchManager::GetInstance();
-	auto products = searchManager->GetProducts();
-	for (const auto& product : products)
-	{
-		auto id = product->GetId();
-	}
-	searchManager->Clear();
-	return wxApp::OnExit();
-}
-

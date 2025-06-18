@@ -8,7 +8,6 @@ class ProdDataUtilApp : public wxApp
 public:
 	bool OnInit() override;
 
-	int OnExit() override;
 };
 
 DECLARE_APP(ProdDataUtilApp)
